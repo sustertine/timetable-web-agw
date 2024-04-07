@@ -1,0 +1,255 @@
+openapi: "3.0.3"
+info:
+  title: "timetable_service API"
+  description: "timetable_service API"
+  version: "1.0.0"
+servers:
+  - url: "https://timetable_service"
+tags:
+  - name: "Timetable controller"
+    description: "API for timetable operations"
+paths:
+  /api/timetables:
+    get:
+      summary: "Get all timetables"
+      description: "Return a list of all timetables"
+      operationId: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/TimetableResponseDto"
+    post:
+      summary: "Create a new timetable"
+      description: "Create a new timetable and return its ID"
+      operationId: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimetableRequestDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "integer"
+                format: "int64"
+  /api/timetables/{id}:
+    get:
+      summary: "Get a timetable by ID"
+      description: "Return a specific timetable by its ID"
+      operationId: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TimetableResponseDto"
+    put:
+      summary: "Update a timetable"
+      description: "Update a specific timetable by its ID"
+      operationId: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimetableRequestDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+    delete:
+      summary: "Delete a timetable"
+      description: "Delete a specific timetable by its ID"
+      operationId: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+  /api/timetables/{id}/entries:
+    get:
+      summary: "Get all entries for a timetable"
+      description: "Return a list of all entries for a specific timetable"
+      operationId: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/TimetableEntryResponseDto"
+    post:
+      summary: "Add an entry to a timetable"
+      description: "Add an entry to a specific timetable by its ID"
+      operationId: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimetableEntryRequestDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+  /api/timetables/{id}/entries/{entryId}:
+    delete:
+      summary: "Delete an entry from a timetable"
+      description: "Delete an entry from a specific timetable by its ID"
+      operationId: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "entryId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+  /api/timetable-entries/{id}:
+    get:
+      summary: "GET api/timetable-entries/{id}"
+      operationId: "findById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TimetableEntryResponseDto"
+    put:
+      summary: "PUT api/timetable-entries/{id}"
+      operationId: "update"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimetableEntryRequestDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+components:
+  schemas:
+    TimetableEntryResponseDto:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        title:
+          type: "string"
+        description:
+          type: "string"
+        startTime:
+          type: "string"
+          format: "date-time"
+        endTime:
+          type: "string"
+          format: "date-time"
+    TimetableResponseDto:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        title:
+          type: "string"
+        description:
+          type: "string"
+        groupId:
+          type: "integer"
+          format: "int64"
+        entries:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/TimetableEntryResponseDto"
+    TimetableRequestDto:
+      type: "object"
+      properties:
+        title:
+          type: "string"
+        description:
+          type: "string"
+        groupId:
+          type: "integer"
+          format: "int64"
+    TimetableEntryRequestDto:
+      type: "object"
+      properties:
+        title:
+          type: "string"
+        description:
+          type: "string"
+        startTime:
+          type: "string"
+          format: "date-time"
+        endTime:
+          type: "string"
+          format: "date-time"
+        recurring:
+          type: "boolean"
