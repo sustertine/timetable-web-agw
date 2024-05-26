@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+service GroupGrpcService {
+  rpc FindAll(EmptyProto) returns (GroupListProto) {}
+  rpc FindById(GroupIdProto) returns (GroupProto) {}
+  rpc Create(CreateGroupProto) returns (GroupProto) {}
+  rpc Delete(GroupIdProto) returns (EmptyProto) {}
+  rpc Update(GroupProto) returns (GroupProto) {}
+}
+
+message GroupProto {
+  string id = 1;
+  string name = 2;
+  repeated string userIds = 4;
+  string adminId = 5;
+  int64 timetableId = 6;
+}
+
+message CreateGroupProto {
+  string name = 1;
+  repeated string userIds = 2;
+  string adminId = 3;
+  int64 timetableId = 4;
+}
+
+message GroupIdProto {
+  string id = 1;
+}
+
+message GroupListProto {
+  repeated GroupProto groups = 1;
+}
+
+message EmptyProto {}
